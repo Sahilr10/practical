@@ -43,4 +43,4 @@ prediction = model.predict(sample_vec)
 if prediction[0] == 1:
     print("Positive Sentiment")
 else:
-    print("Negative Sentiment")
+    print("Negative Sentiment") 

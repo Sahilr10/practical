@@ -1,0 +1,51 @@
+# SMOTE IMPLEMENTATION
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
+
+# Load dataset
+data = pd.read_csv("data.csv")   # replace with your dataset
+
+print("Original Class Distribution:\n", data.iloc[:, -1].value_counts())
+
+# -------------------------------
+# 🔹 SPLIT FEATURES & TARGET
+# -------------------------------
+
+X = data.iloc[:, :-1]   # features
+y = data.iloc[:, -1]    # target (must be categorical/class label)
+
+# -------------------------------
+# 🔹 TRAIN-TEST SPLIT
+# -------------------------------
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# -------------------------------
+# 🔹 FEATURE SCALING (Recommended)
+# -------------------------------
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# -------------------------------
+# 🔹 APPLY SMOTE
+# -------------------------------
+
+smote = SMOTE(random_state=42)
+
+X_train_smote, y_train_smote = smote.fit_resample(X_train, y_train)
+
+# -------------------------------
+# 🔹 CHECK NEW DISTRIBUTION
+# -------------------------------
+
+import numpy as np
+
+print("\nAfter SMOTE Class Distribution:")
+print(pd.Series(y_train_smote).value_counts())
